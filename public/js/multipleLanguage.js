@@ -1,0 +1,1 @@
+$(document).ready(function(){$(".btn-multiple-language").change(function(a){a.preventDefault(),divChangeAmount=$(this).parent();var e=$(".hide_language").data("route"),n=$(".btn-multiple-language").val(),t=$(".hide_language").data("token");$.ajax({type:"POST",url:e,dataType:"JSON",data:{lang:n,_token:t},success:function(a){a.success&&(window.location.href=a.url_back)}})})});
