@@ -1,1 +1,147 @@
-$(document).ready(function(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}}),$("#form-comment").show(),$("#add-comment").on("click",function(){if(divChangeAmount=$(this).parent(),"none"==$("#form-comment").css("display")){$("#form-comment").show();var n=divChangeAmount.data("labelHide");$("#add-comment").html(n)}else{$("#form-comment").hide();var t=divChangeAmount.data("labelAddComment");$("#add-comment").html(t)}}),$(".comments").show(),$("#show-hide-list-comment").on("click",function(){if(divChangeAmount=$(this).parent(),"none"==$(".comments").css("display")){$(".comments").show();var n=divChangeAmount.data("labelHide");$("#show-hide-list-comment").html(n),$(".hr-comment").css("display","block")}else{$(".comments").hide();var t=divChangeAmount.data("labelShowComment");$("#show-hide-list-comment").html(t),$(".hr-comment").css("display","none")}}),$(".addComment").click(function(n){n.preventDefault(),divChangeAmount=$(this).parent();var t=divChangeAmount.data("pollId"),e=$(".hide").data("route"),a=(divChangeAmount.data("user"),$("#content"+t).val()),m=$("#name"+t).val(),o=divChangeAmount.data("commentName"),l=divChangeAmount.data("commentContent"),i=divChangeAmount.data("commentLimitName"),d=divChangeAmount.data("commentLimitContent"),t=divChangeAmount.data("pollId"),a=$("#content"+t).val(),m=$("#name"+t).val();return $(".comment-info-name, .comment-info-content").removeClass("error"),$(".comment-name-validate, .comment-content-validate").removeClass("alert alert-poll-set-ip").html(""),""==m.trim()?($(".comment-info-name").addClass("error"),$(".comment-name-validate").addClass("alert alert-poll-set-ip").html('<span class="glyphicon glyphicon-warning-sign"></span> '+o),!1):m.trim().length>=100?($(".comment-info-name").addClass("error"),$(".comment-name-validate").addClass("alert alert-poll-set-ip").html('<span class="glyphicon glyphicon-warning-sign"></span> '+i),!1):""==a.trim()?($(".comment-info-content").addClass("error"),$(".comment-name-validate").addClass("alert alert-poll-set-ip").html('<span class="glyphicon glyphicon-warning-sign"></span> '+l),!1):a.trim().length>=255?($(".comment-info-content").addClass("error"),$(".comment-name-validate").addClass("alert alert-poll-set-ip").html('<span class="glyphicon glyphicon-warning-sign"></span> '+d),!1):void $.ajax({type:"POST",url:e,dataType:"JSON",data:{poll_id:t,content:a,name:m},success:function(n){if(n.success){$("#content"+t).val(""),$(".comments").append(n.html);var e=$(".comment-count").html();$(".comment-count").html(parseInt(e)+1)}}})}),$(document).on("click",".delete-comment",function(n){n.preventDefault();var t=$(".hide").data("confirmRemove");if(confirm(t)){divChangeAmount=$(this).parent();var e=divChangeAmount.data("commentId"),a=divChangeAmount.data("pollId"),m=$(".hide").data("route");$.ajax({type:"POST",url:m+"/"+e,dataType:"JSON",data:{_method:"DELETE",comment_id:e,poll_id:a},success:function(n){if(n.success){$("#"+e).hide();var t=$(".comment-count").html();$(".comment-count").html(parseInt(t)-1)}}})}})});
+$(document).ready(function(){
+
+     $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#form-comment').show();
+    $('#add-comment').on('click', function() {
+        divChangeAmount = $(this).parent();
+
+        if ( $('#form-comment').css('display') == 'none' ) {
+            $('#form-comment').show();
+            var labelHide = divChangeAmount.data('labelHide');
+            $('#add-comment').html(labelHide);
+        } else {
+            $('#form-comment').hide();
+            var labelAddComment = divChangeAmount.data('labelAddComment');
+            $('#add-comment').html(labelAddComment);
+        }
+    });
+
+    $('.comments').show();
+    $('#show-hide-list-comment').on('click', function() {
+        divChangeAmount = $(this).parent();
+
+        if ( $('.comments').css('display') == 'none' ) {
+            $('.comments').show();
+            var labelHide = divChangeAmount.data('labelHide');
+            $('#show-hide-list-comment').html(labelHide);
+            $('.hr-comment').css('display', 'block');
+        } else {
+            $('.comments').hide();
+            var labelShowComment = divChangeAmount.data('labelShowComment');
+            $('#show-hide-list-comment').html(labelShowComment);
+            $('.hr-comment').css('display', 'none');
+        }
+    });
+
+    $('.addComment').click(function(e){
+        e.preventDefault();
+        divChangeAmount = $(this).parent();
+        var pollId = divChangeAmount.data('pollId');
+        var route = $('.hide').data('route');
+        var user = divChangeAmount.data('user');
+        var content = $('#content' + pollId).val();
+        var name = $('#name' + pollId).val();
+
+        var commentName = divChangeAmount.data('commentName');
+        var commentContent = divChangeAmount.data('commentContent');
+        var commentLimitName = divChangeAmount.data('commentLimitName');
+        var commentLimitContent = divChangeAmount.data('commentLimitContent');
+        var passValidate = true;
+
+        var pollId = divChangeAmount.data('pollId');
+        var content = $('#content' + pollId).val();
+        var name = $('#name' + pollId).val();
+
+        /* remove class error */
+        $('.comment-info-name, .comment-info-content').removeClass('error');
+        $('.comment-name-validate, .comment-content-validate').removeClass('alert alert-poll-set-ip').html('');
+
+        if (name.trim() == '') {
+            $('.comment-info-name').addClass('error');
+            $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+                .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentName);
+
+            return false;
+        }
+
+        if (name.trim().length >= 100) {
+            $('.comment-info-name').addClass('error');
+            $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+                .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentLimitName);
+
+            return false;
+        }
+
+        if (content.trim() == '') {
+            $('.comment-info-content').addClass('error');
+            $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+                .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentContent);
+
+            return false;
+        }
+
+        if (content.trim().length >= 255) {
+            $('.comment-info-content').addClass('error');
+            $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+                .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentLimitContent);
+
+            return false;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: route,
+            dataType: 'JSON',
+            data: {
+                'poll_id': pollId,
+                'content': content,
+                'name': name,
+            },
+            success: function(data){
+                if (data.success) {
+                    $('#content' + pollId).val('');
+                    $('.comments').append(data.html);
+                    var commentCount = $('.comment-count').html();
+                    $('.comment-count').html(parseInt(commentCount) + 1);
+                }
+            }
+        });
+    });
+
+    $(document).on( 'click', '.delete-comment', function (e) {
+        e.preventDefault();
+        var confirmRemove = $('.hide').data('confirmRemove');
+
+        if (confirm(confirmRemove)) {
+            divChangeAmount = $(this).parent();
+            var commentId = divChangeAmount.data('commentId');
+            var pollId = divChangeAmount.data('pollId');
+            var route = $('.hide').data('route');
+
+            $.ajax({
+                type: 'POST',
+                url: route + '/' + commentId,
+                dataType: 'JSON',
+                data: {
+                    '_method': 'DELETE',
+                    'comment_id': commentId,
+                    'poll_id': pollId,
+                },
+                success: function(data){
+                    if (data.success) {
+                        $('#' + commentId).hide();
+                        var commentCount = $('.comment-count').html();
+                        $('.comment-count').html(parseInt(commentCount) - 1);
+                    }
+                }
+            });
+        }
+    });
+});
+
+//# sourceMappingURL=comment.js.map

@@ -1720,15 +1720,34 @@ EDIT POLL
   margin: 0;
 }
 
-#setting-required .nav .st .setting-10 {
+#setting-required .nav .st .setting-12 {
+  margin-top: 10px;
+}
+
+#setting-required .nav .st .setting-10,
+#setting-required .nav .st .setting-12 {
   display: none;
   margin-left: 20px;
 }
 
 @media screen and (max-width: 503px) {
-  #setting-required .nav .st .setting-10 .span-text-setting {
+  #setting-required .nav .st .setting-10 .span-text-setting,
+  #setting-required .nav .st .setting-12 .span-text-setting {
     margin-left: 85px;
   }
+}
+
+#setting-required .nav .st .setting-12.be-show, #setting-required .nav .st .setting-10.be-show {
+  display: block;
+}
+
+.add-type-email {
+  margin: 5px 0 5px 20px;
+}
+
+.add-type-email .bootstrap-tagsinput {
+  min-height: auto;
+  border-radius: 0;
 }
 
 /*# sourceMappingURL=master.css.map */

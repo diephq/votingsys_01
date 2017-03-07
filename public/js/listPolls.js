@@ -1,1 +1,58 @@
-$(document).ready(function(){$(".btn-initiated").on("click",function(){var e=$(".hide").data("routeInitiated"),t=$(".hide").data("message");$.ajax({type:"GET",url:e,dataType:"JSON",success:function(e){e.success&&($(".polls-initiated").empty(),$(".polls-initiated").append(e.html),$(".message-initiated-poll").html(t))}})}),$(".btn-participanted-in").on("click",function(){var e=$(".hide").data("routeParticipanted"),t=$(".hide").data("message");$.ajax({type:"GET",url:e,dataType:"JSON",success:function(e){e.success&&($(".polls-participanted-in").empty(),$(".polls-participanted-in").append(e.html),$(".message-participanted-in-poll").html(t))}})}),$(".btn-closed").on("click",function(){var e=$(".hide").data("routeClosed"),t=$(".hide").data("message");$.ajax({type:"GET",url:e,dataType:"JSON",success:function(e){e.success&&($(".polls-closed").empty(),$(".polls-closed").append(e.html),$(".message-closed-poll").html(t))}})})});
+$(document).ready(function(){
+
+    $('.btn-initiated').on('click', function() {
+        var routeInitiated = $('.hide').data('routeInitiated');
+        var message = $('.hide').data('message');
+
+        $.ajax({
+            type: 'GET',
+            url: routeInitiated,
+            dataType: 'JSON',
+            success: function(data){
+                if (data.success) {
+                    $('.polls-initiated').empty();
+                    $('.polls-initiated').append(data.html);
+                    $('.message-initiated-poll').html(message);
+                }
+            }
+        });
+    });
+
+    $('.btn-participanted-in').on('click', function() {
+        var routeParticipanted = $('.hide').data('routeParticipanted');
+        var message = $('.hide').data('message');
+
+        $.ajax({
+            type: 'GET',
+            url: routeParticipanted,
+            dataType: 'JSON',
+            success: function(data){
+                if (data.success) {
+                    $('.polls-participanted-in').empty();
+                    $('.polls-participanted-in').append(data.html);
+                    $('.message-participanted-in-poll').html(message);
+                }
+            }
+        });
+    });
+
+    $('.btn-closed').on('click', function() {
+        var routeClosed = $('.hide').data('routeClosed');
+        var message = $('.hide').data('message');
+
+        $.ajax({
+            type: 'GET',
+            url: routeClosed,
+            dataType: 'JSON',
+            success: function(data){
+                if (data.success) {
+                    $('.polls-closed').empty();
+                    $('.polls-closed').append(data.html);
+                    $('.message-closed-poll').html(message);
+                }
+            }
+        });
+    });
+});
+
+//# sourceMappingURL=listPolls.js.map

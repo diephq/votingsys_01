@@ -1,1 +1,735 @@
-$(document).ready(function(){function e(){$(".emailVote").hasClass("error")&&$(".emailVote").removeClass("error"),$(".nameVote").hasClass("error")&&$(".nameVote").removeClass("error")}function t(e){var e="<span class='glyphicon glyphicon-warning-sign'></span> "+e;$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(e),$(".emailVote").addClass("error"),$(".nameVote").hasClass("error")&&$(".nameVote").removeClass("error")}$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}}),$(".loader").hide(),$.extend({xResponse:function(e,i,a){var o=null;return $.ajax({url:e,type:"POST",data:i,dataType:"json",async:!1,beforeSend:function(){$(".loader").show()},success:function(e){o=e.status},complete:function(){$(".loader").hide()},error:function(){t(a),$(".loader").hide()}}),o}}),$(".btn-vote").prop("disabled",!0),$(".btn-vote").on("click",function(){var i=/^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;divChangeAmount=$(this).parent();var a=(divChangeAmount.data("url"),divChangeAmount.data("idPoll")),o=divChangeAmount.data("urlCheckExistEmail"),s=divChangeAmount.data("isRequiredEmail"),n=divChangeAmount.data("isRequiredName"),r=divChangeAmount.data("isRequiredNameAndEmail"),l=divChangeAmount.data("isNotSameEmail"),d=$(".nameVote").val(),h=$(".emailVote").val(),p="",m=divChangeAmount.data();if(1==s)if(""!=h.trim())if(i.test(h))if(d.trim().length>=100)divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("voteLimitName"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".nameVote").addClass("error"),$(".emailVote").hasClass("error")&&$(".emailVote").removeClass("error");else{if(l){var g=$.xResponse(o,{idPoll:a,emailVote:h});if(g)return void t(m.messageEmailExists,m.messageErrorOccurs)}this.disabled=!0,e(),$(".message-validation").removeClass("alert alert-warning alert-poll-set-ip").html(""),$("#form-vote").submit(),$(".loader").show()}else divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageValidateEmail"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".emailVote").addClass("error"),$(".nameVote").hasClass("error")&&$(".nameVote").removeClass("error");else divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageRequiredEmail"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".emailVote").addClass("error"),$(".nameVote").hasClass("error")&&$(".nameVote").removeClass("error");else if(1==n)""!=d.trim()?d.trim().length<100?""!=h.trim()?i.test(h)?(this.disabled=!0,e(),$(".message-validation").removeClass("alert alert-warning alert-poll-set-ip").html(""),$("#form-vote").submit(),$(".loader").show()):(divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageValidateEmail"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".emailVote").addClass("error"),$(".nameVote").hasClass("error")&&$(".nameVote").removeClass("error")):(this.disabled=!0,e(),$(".message-validation").removeClass("alert alert-warning alert-poll-set-ip").html(""),$("#form-vote").submit(),$(".loader").show()):(divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("voteLimitName"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".nameVote").addClass("error"),$(".emailVote").hasClass("error")&&$(".emailVote").removeClass("error")):(divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageRequiredName"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".nameVote").addClass("error"),$(".emailVote").hasClass("error")&&$(".emailVote").removeClass("error"));else if(1==r)if(""!=d.trim()&&d.trim().length<100)if(""==h.trim())divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageRequiredEmail"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".emailVote").addClass("error"),$(".nameVote").hasClass("error")&&$(".nameVote").removeClass("error");else if(i.test(h)){if(l){var g=$.xResponse(o,{idPoll:a,emailVote:h});if(g)return void t(m.messageEmailExists,m.messageErrorOccurs)}this.disabled=!0,e(),$(".message-validation").removeClass("alert alert-warning alert-poll-set-ip").html(""),$("#form-vote").submit(),$(".loader").show()}else divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageValidateEmail"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".emailVote").addClass("error"),$(".nameVote").hasClass("error")&&$(".nameVote").removeClass("error");else""==d.trim()?""==h.trim()?(divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageRequiredNameAndEmail"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".nameVote").addClass("error"),$(".emailVote").addClass("error")):(divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageRequiredName"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".nameVote").addClass("error"),$(".emailVote").hasClass("error")&&$(".emailVote").removeClass("error")):d.trim().length>=100&&(divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("voteLimitName"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".nameVote").addClass("error"),$(".emailVote").hasClass("error")&&$(".emailVote").removeClass("error"));else{var c=!1;if(""!=h.trim()?i.test(h)?c=!0:(divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("messageValidateEmail"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".emailVote").addClass("error"),$(".nameVote").hasClass("error")&&$(".nameVote").removeClass("error")):c=!0,d.trim().length>=100&&(divChangeAmount=$(this).parent(),p="<span class='glyphicon glyphicon-warning-sign'></span> "+divChangeAmount.data("voteLimitName"),$(".message-validation").addClass("alert alert-warning alert-poll-set-ip").html(p),$(".nameVote").addClass("error"),$(".emailVote").hasClass("error")&&$(".emailVote").removeClass("error"),c=!1),c){if(l){var g=$.xResponse(o,{idPoll:a,emailVote:h});if(g)return void t(m.messageEmailExists,m.messageErrorOccurs)}this.disabled=!0,e(),$(".message-validation").removeClass("alert alert-warning alert-poll-set-ip").html(""),$("#form-vote").submit(),$(".loader").show()}}}),$(".btn-edit-submit").on("click",function(){var e=!1;if($("input[id^=optionText]").each(function(){if(""==$(this).val())return e=!0}),e){var t=$(".vote-style").data("option").message.option_required;return $(".btn-edit-submit").prop("disabled",!0),void $(".error_option").addClass("has-error").html('<span id="title-error" class="help-block">'+t+"</span>")}$(".btn-edit-submit").prop("disabled",!1),$("#edit-voted-content").submit()}),$("#message-flash").fadeIn().delay(3e3).fadeOut(),$("#frame-upload-image-edit").on("hidden.bs.modal",function(){$("body").attr("class","modal-open")}),$(".edit-each-option").on("click",function(){var e=$(this).closest(".vote-style").data("option"),t=e.view.option,i={optionText:{}},a=$(".content-option-vote").length?$(".content-option-vote"):$(".content-option-not-image");a.each(function(e){var t=$('input[name="option[]"]').eq(e).val();i.optionText[t]=$(this).text()}),$(".poll-option").html(""),createOption(t,"",i);var o=["checkOptionSame('",e.message.option_duplicate,"')"].join("");$("#frame-edit-poll").find(".btn-remove-option").remove(),$("#frame-edit-poll").find("input[name^=optionText]").removeAttr("onfocus onclick").attr({onblur:o,onkeyup:o}),pickDateOption(),$(".li-parent-vote").find(".image-option-vote").each(function(e){var t=$(this).prop("src");t.indexOf("default-thumb.gif")==-1&&($("#frame-edit-poll").find(".render-img").eq(e).attr("src",t),$("#frame-edit-poll").find(".box-media-image").eq(e).css("display","inline-block"))}),$("#frame-edit-poll").modal("show")}),$(".horizontal-overflow").on("click",".hidden-counter",function(){var e=$(this).data("url-modal-voter");$.ajax({url:e,method:"GET",dataType:"json",success:function(e){e.status&&($("#result-voters").html(e.voters),$(".loader").hide())},beforeSend:function(){$(".loader").show()},complete:function(){$(".loader").hide(),$("#voters-modal").modal("show")}})})});var jqAddNewImageOption11=new jqAddImageOption({wrapperPoll:".poll-option",parentOption:".form-group",thumbImageOption:".render-img",btnChooseImage:".upload-photo",frImage:"#frame-upload-image-edit",frUploadFile:".photo-tb-upload-edit",frPreImage:".img-pre-option-edit",frAddImgLink:".add-image-by-link-edit",frInputText:".photo-tb-url-txt-edit",frDelPhoto:".photo-tb-del-edit",frConfirmYes:".btn-yes-edit",frInputFileTemp:".fileImgTempEdit",frContentError:".error-win-img-edit",messages:"div[data-option]"}),addNewOption=function(){this.init=function(){this.cacheDom(),this.bindEvent()},this.cacheDom=function(){this.$preview=$(".render-img"),this.$btnFileImg=$(".btn-file-img"),this.$deleteImg=$(".deleteImg"),this.$parentThumb=$(".box-media-image"),this.$newOption=$(".new-option"),this.$liParent=$(".parent-vote"),this.$inputTextOption=$(".text-new-option"),this.$allOption=$("input[id^=horizontal]"),this.$contentOption=$(".option-name").find("span"),this.$btnVote=$(".btn-vote"),this.$boxVote=$("#voting_wizard"),this.$voteImageWrapper=$(".vote-preview-wrapper"),this.$horizontalWrapper=$(".horizontal-overflow"),this.isRadio=this.$newOption.is(":radio"),this.$showError=$("#error_option"),this.messageValidate=this.$showError.data("message"),this.$datePicker=$(".date-time-picker"),this.$pickDate=$(".pick-date")},this.bindEvent=function(){this.$showError.hide(),this.$preview.on("load",this.loadPreImage.bind(this)),this.$inputTextOption.on("input",this.addText.bind(this)),this.$boxVote.on("click",".new-option",this.chooseOption.bind(this)),this.$boxVote.on("click",".parent-vote",this.chooseOptionWithLi.bind(this)),this.$pickDate.on("click",this.getTextDatePicker.bind(this)),this.$datePicker.on("dp.hide",this.addTextDate.bind(this))},this.loadPreImage=function(){this.$deleteImg.show(),this.$voteImageWrapper.css("border","1px solid #ccc"),this.$voteImageWrapper.css("border-top","none")},this.getTextDatePicker=function(){this.$pickDate.data("isHasDate",!0);var e="undefined"==typeof this.addText()?"":this.addText().trim();this._isValidDate(e)&&(e=""),this.$datePicker.data("preText",e),this.$datePicker.datetimepicker({showClose:!0,icons:{close:"glyphicon glyphicon-ok"}}).data("DateTimePicker").show()},this.addTextDate=function(e){var t=moment(e.date).format("MM/DD/YYYY h:mm A"),i=this.$datePicker.data("preText"),a=(i+" "+t).trim();this.$inputTextOption.val(a),this.$datePicker.data("DateTimePicker").hide().destroy(),this.$pickDate.data("isHasDate",!1)},this.readURL=function(){var e=this.$inputFileImg[0],t=this._checkExtensionImage(e),i=this.$inputTextOption.val();if(!this._validateDuplicate(i))if(t){if(this.$showError.hide(),e.files&&e.files[0]){var a=new FileReader;a.onload=this._renderImage.bind(this),a.readAsDataURL(e.files[0])}}else this.$inputFileImg.val(""),this._displayError(this.messageValidate.image)},this.deletePhoto=function(){this.$preview.attr("src","").hide(),this.$parentThumb.hide(),this.$deleteImg.hide(),this.$voteImageWrapper.css("border","none"),""==this.$inputTextOption.val()&&this._notViewSubmit()},this.addText=function(){var e=this.$inputTextOption.val().trim();return this._validateDuplicate(e)?(this._notViewSubmit(),void this._displayError(this.messageValidate.option_duplicate)):(this.$showError.hide(),this.isRadio&&$("input[id^=horizontal]").prop("checked",!1),""!=e||this.$pickDate.data("isHasDate")?(this._viewSubmit(),e):void this._notViewSubmit())},this.chooseOption=function(e){var t=this.$inputTextOption.val();if(""==t&&(this.isRadio&&(this.$btnVote.prop("disabled",!0),this.$newOption.prop("checked",!1)),this.deletePhoto()),this.isRadio)$("input[id^=horizontal]").prop("checked",!1);else{if(!this.$newOption.prop("checked")&&!$("input[id^=horizontal]").is(":checked"))return void this.$btnVote.prop("disabled",!0);this.$btnVote.prop("disabled",!1)}},this.chooseOptionWithLi=function(){this.isRadio&&(this.$newOption.prop("checked",!1),this.$inputTextOption.val(""),this.deletePhoto()),this.$btnVote.prop("disabled",!$("input[id^=horizontal]").is(":checked")),this.$newOption.is(":checked")&&this.$btnVote.prop("disabled",!1)},this._viewSubmit=function(){this.$newOption.prop("checked",!0),this.$btnVote.prop("disabled",!1)},this._notViewSubmit=function(){$("input[id^=horizontal]").is(":checked")||this.$btnVote.prop("disabled",!0),this.$newOption.prop("checked",!1)},this._renderImage=function(e){this.isRadio&&$("input[id^=horizontal]").prop("checked",!1),this.$preview.attr("src",e.target.result).show(),this.$deleteImg.show(),this.$voteImageWrapper.css("border","1px solid #ccc"),this.$voteImageWrapper.css("border-top","none"),this._viewSubmit(),this._toScrollLast()},this._checkExtensionImage=function(e){var t=e.value,i=t.substring(t.lastIndexOf(".")+1).toLowerCase(),a=["gif","png","bmp","jpeg","jpg"];return a.indexOf(i)>-1},this._validateDuplicate=function(e){var t=!1;return this.$contentOption.each(function(){if(e==$(this).text())return t=!0}),t},this._toScrollLast=function(){var e=$(".horizontal-overflow").prop("scrollHeight");e>400&&this.$horizontalWrapper.animate({scrollTop:e},1e3)},this._displayError=function(e){this.$showError.find(".help-block").text(e),this.$showError.show(),this._toScrollLast()},this._isValidDate=function(e){var t=/^\d{2}\/\d{2}\/\d{4}\s+[\d]+:\d{2}\s+(AM|PM)$/;return null!=e.match(t)}},jqAddNewImageOption=new jqAddImageOption({wrapperPoll:".horizontal-overflow",btnChooseImage:".upload-photo",parentOption:".parent-vote-new-option",messages:"div[data-message]",frImage:"#frame-upload-image",frUploadFile:".photo-tb-upload",frPreImage:".img-pre-option",frAddImgLink:".add-image-by-link",frInputText:".photo-tb-url-txt",frDelPhoto:".photo-tb-del",frConfirmYes:".btn-yes",frInputFileTemp:".fileImgTemp",frContentError:".error-win-img",messages:"div[data-option]",horizontalWrapper:".horizontal-overflow"}),addOption=new addNewOption;addOption.init();
+$(document).ready(function(){
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $('.loader').hide();
+
+    $.extend({
+        xResponse: function(url, data, messageError) {
+            // local var
+            var theResponse = null;
+            // jQuery ajax
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                dataType: "json",
+                async: false,
+
+                beforeSend: function () {
+                    $('.loader').show();
+                },
+
+                success: function(respText) {
+                    theResponse = respText.status;
+                },
+
+                complete: function () {
+                    $('.loader').hide();
+                },
+
+                error: function () {
+                    showMessage(messageError);
+                    $('.loader').hide();
+                }
+            });
+            // Return the response text
+            return theResponse;
+        }
+    });
+
+    $('.btn-vote').prop('disabled', true);
+
+    $('.btn-vote').on('click', function() {
+        var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+        divChangeAmount = $(this).parent();
+        var url = divChangeAmount.data('url');
+        var idPoll = divChangeAmount.data('idPoll');
+        var urlCheckExistEmail = divChangeAmount.data('urlCheckExistEmail');
+        var isRequiredEmail = divChangeAmount.data('isRequiredEmail');
+        var isRequiredName = divChangeAmount.data('isRequiredName');
+        var isRequiredNameAndEmail = divChangeAmount.data('isRequiredNameAndEmail');
+        var isNotTheSameEmail = divChangeAmount.data('isNotSameEmail');
+        var nameVote = $('.nameVote').val();
+        var emailVote = $('.emailVote').val();
+        var message = '';
+        var data = divChangeAmount.data();
+
+        if (isRequiredEmail == 1) {
+            if (emailVote.trim() != '') {
+                if (testEmail.test(emailVote)) {
+                    if (nameVote.trim().length >= 100) {
+                        divChangeAmount = $(this).parent();
+                        message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                            + ' ' + divChangeAmount.data('voteLimitName');
+                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                        $('.nameVote').addClass('error');
+
+                        if ($('.emailVote').hasClass('error')) {
+                            $('.emailVote').removeClass('error');
+                        }
+                    } else {
+                        // Check pass type email of setting
+                        if (data.isAccecptTypeMail) {
+                            if (!checkAccecptTypeEmail(data.typeEmail.trim(), emailVote.trim())) {
+                                showMessage(data.messageRequiredTypeEmail);
+
+                                return;
+                            }
+                        }
+
+                        // Check email exist if propety require email
+                        if (isNotTheSameEmail) {
+                            var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+
+                            if (status) {
+                                showMessage(data.messageEmailExists, data.messageErrorOccurs);
+
+                                return;
+                            }
+                        }
+
+                        this.disabled = true;
+                        removeClassError();
+                        $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
+                        $('#form-vote').submit();
+                        $('.loader').show();
+                    }
+                } else {
+                    divChangeAmount = $(this).parent();
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' +  divChangeAmount.data('messageValidateEmail');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                    $('.emailVote').addClass('error');
+
+                    if ($('.nameVote').hasClass('error')) {
+                        $('.nameVote').removeClass('error');
+                    }
+                }
+            } else {
+                divChangeAmount = $(this).parent();
+                message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                    + ' ' + divChangeAmount.data('messageRequiredEmail');
+                $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                $('.emailVote').addClass('error');
+
+                if ($('.nameVote').hasClass('error')) {
+                    $('.nameVote').removeClass('error');
+                }
+            }
+        } else if (isRequiredName == 1) {
+            if (nameVote.trim() != '') {
+                if (nameVote.trim().length < 100) {
+                    if (emailVote.trim() != '') {
+                        if (testEmail.test(emailVote)) {
+                            this.disabled = true;
+                            removeClassError();
+                            $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
+                            $('#form-vote').submit();
+                            $('.loader').show();
+                        } else {
+                            divChangeAmount = $(this).parent();
+                            message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                                + ' ' +  divChangeAmount.data('messageValidateEmail');
+                            $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                            $('.emailVote').addClass('error');
+
+                            if ($('.nameVote').hasClass('error')) {
+                                $('.nameVote').removeClass('error');
+                            }
+                        }
+                    } else {
+                        this.disabled = true;
+                        removeClassError();
+                        $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
+                        $('#form-vote').submit();
+                        $('.loader').show();
+                    }
+                } else {
+                    divChangeAmount = $(this).parent();
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' + divChangeAmount.data('voteLimitName');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                    $('.nameVote').addClass('error');
+
+                    if ($('.emailVote').hasClass('error')) {
+                        $('.emailVote').removeClass('error');
+                    }
+                }
+            } else {
+                divChangeAmount = $(this).parent();
+                message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                    + ' ' + divChangeAmount.data('messageRequiredName');
+                $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                $('.nameVote').addClass('error');
+
+                if ($('.emailVote').hasClass('error')) {
+                    $('.emailVote').removeClass('error');
+                }
+            }
+        } else if (isRequiredNameAndEmail == 1) {
+            if (nameVote.trim() != '' && nameVote.trim().length < 100) {
+                if (emailVote.trim() == '') {
+                    divChangeAmount = $(this).parent();
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' + divChangeAmount.data('messageRequiredEmail');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                    $('.emailVote').addClass('error');
+
+                    if ($('.nameVote').hasClass('error')) {
+                        $('.nameVote').removeClass('error');
+                    }
+                } else {
+                    if (testEmail.test(emailVote)) {
+                        // Check pass type email of setting
+                        if (data.isAccecptTypeMail) {
+                            if (!checkAccecptTypeEmail(data.typeEmail, emailVote)) {
+                                showMessage(data.messageRequiredTypeEmail);
+
+                                return;
+                            }
+                        }
+
+                        // Check email exist if propety require email
+                        if (isNotTheSameEmail) {
+                            var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+
+                            if (status) {
+                                showMessage(data.messageEmailExists, data.messageErrorOccurs);
+
+                                return;
+                            }
+                        }
+
+                        this.disabled = true;
+                        removeClassError();
+                        $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
+                        $('#form-vote').submit();
+                        $('.loader').show();
+                    } else {
+                        divChangeAmount = $(this).parent();
+                        message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                            + ' ' +  divChangeAmount.data('messageValidateEmail');
+                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                        $('.emailVote').addClass('error');
+
+                        if ($('.nameVote').hasClass('error')) {
+                            $('.nameVote').removeClass('error');
+                        }
+                    }
+                }
+            } else {
+                if (nameVote.trim() == '') {
+                    if (emailVote.trim() == '') {
+                        divChangeAmount = $(this).parent();
+                        message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                            + ' ' + divChangeAmount.data('messageRequiredNameAndEmail');
+                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                        $('.nameVote').addClass('error');
+                        $('.emailVote').addClass('error');
+                    } else {
+                        divChangeAmount = $(this).parent();
+                        message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                            + ' ' + divChangeAmount.data('messageRequiredName');
+                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                        $('.nameVote').addClass('error');
+
+                        if ($('.emailVote').hasClass('error')) {
+                            $('.emailVote').removeClass('error');
+                        }
+                    }
+                } else if (nameVote.trim().length >= 100) {
+                    divChangeAmount = $(this).parent();
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' + divChangeAmount.data('voteLimitName');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                    $('.nameVote').addClass('error');
+
+                    if ($('.emailVote').hasClass('error')) {
+                        $('.emailVote').removeClass('error');
+                    }
+                }
+            }
+        } else {
+            var isPassValidate = false;
+
+            if (emailVote.trim() != '') {
+                if (testEmail.test(emailVote)) {
+                    isPassValidate = true;
+                } else {
+                    divChangeAmount = $(this).parent();
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' +  divChangeAmount.data('messageValidateEmail');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                    $('.emailVote').addClass('error');
+
+                    if ($('.nameVote').hasClass('error')) {
+                        $('.nameVote').removeClass('error');
+                    }
+                }
+            } else {
+                isPassValidate = true;
+            }
+
+            if (nameVote.trim().length >= 100) {
+                divChangeAmount = $(this).parent();
+                message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                    + ' ' + divChangeAmount.data('voteLimitName');
+                $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                $('.nameVote').addClass('error');
+
+                if ($('.emailVote').hasClass('error')) {
+                    $('.emailVote').removeClass('error');
+                }
+                isPassValidate = false;
+            }
+
+            if (isPassValidate) {
+                // Check email exist if propety require email
+                if (isNotTheSameEmail) {
+                    var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+
+                    if (status) {
+                        showMessage(data.messageEmailExists, data.messageErrorOccurs);
+
+                        return;
+                    }
+                }
+                this.disabled = true;
+                removeClassError();
+                $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
+                $('#form-vote').submit();
+                $('.loader').show();
+            }
+        }
+    });
+
+    function removeClassError()
+    {
+        if ($('.emailVote').hasClass('error')) {
+            $('.emailVote').removeClass('error');
+        }
+
+        if ($('.nameVote').hasClass('error')) {
+            $('.nameVote').removeClass('error');
+        }
+    }
+
+    function showMessage(message)
+    {
+        var message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+            + ' ' +  message;
+        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+        $('.emailVote').addClass('error');
+
+        if ($('.nameVote').hasClass('error')) {
+            $('.nameVote').removeClass('error');
+        }
+    }
+
+    function checkAccecptTypeEmail(typeEmail, email)
+    {
+        var type = email.substr(email.indexOf('@') + 1).trim();
+        var typeEmail = typeEmail.split(',');
+        var sameExtensionEmail = false;
+
+        if (type.length && typeEmail.length) {
+            typeEmail.some(function (item) {
+                return sameExtensionEmail = (item.trim() === type);
+            });
+        }
+
+        return sameExtensionEmail;
+    }
+
+    $('.btn-edit-submit').on('click', function () {
+        var isEmpty = false;
+        $('input[id^=optionText]').each(function () {
+            if ($(this).val() == '') {
+                return isEmpty = true;
+            }
+        });
+
+        if (isEmpty) {
+            var messageEmpty = $('.vote-style').data('option').message.option_required;
+            $('.btn-edit-submit').prop('disabled', true);
+            $('.error_option').addClass('has-error').html('<span id="title-error" class="help-block">' + messageEmpty + '</span>');
+
+            return;
+        }
+
+        $('.btn-edit-submit').prop('disabled', false);
+        $('#edit-voted-content').submit();
+    });
+
+    $('#message-flash').fadeIn().delay(3000).fadeOut();
+
+    $('#frame-upload-image-edit').on('hidden.bs.modal', function () {
+        $('body').attr('class', 'modal-open');
+    });
+
+    $('.edit-each-option').on('click', function () {
+        var dataClient = $(this).closest('.vote-style').data('option');
+        var dataViewOption = dataClient.view.option;
+        var data = {optionText: {}};
+
+        var elContentVote = $('.content-option-vote').length
+            ? $('.content-option-vote')
+            : $('.content-option-not-image');
+
+        elContentVote.each(function (index) {
+            var idOption = $('input[name="option[]"]').eq(index).val();
+            data.optionText[idOption] = $(this).text();
+        });
+
+        $('.poll-option').html('')
+        createOption(dataViewOption, '', data);
+
+        var frnCheckTheSame = ['checkOptionSame(this, \'', dataClient.message.option_duplicate, '\')'].join('');
+        $('#frame-edit-poll').find('.btn-remove-option').remove();
+        $('#frame-edit-poll').find('input[name^=optionText]')
+            .removeAttr('onfocus onclick')
+            .attr({
+                onblur: frnCheckTheSame,
+                onkeyup: frnCheckTheSame
+            });
+
+        pickDateOption();
+
+        $('.li-parent-vote').find('.image-option-vote').each(function (index) {
+            var srcImage = $(this).prop('src');
+            if (srcImage.indexOf('default-thumb.gif') == -1 ) {
+                $('#frame-edit-poll').find('.render-img').eq(index).attr('src', srcImage);
+                $('#frame-edit-poll').find('.box-media-image').eq(index).css('display', 'inline-block');
+            }
+        });
+
+        $('#frame-edit-poll').modal('show');
+    });
+
+    $('.tab-content').on('click', '.hidden-counter', function () {
+        var url = $(this).data('url-modal-voter');
+
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.status) {
+                    $('#result-voters').html(data.voters);
+                    $('.loader').hide();
+                }
+            },
+
+            beforeSend: function () {
+                $('.loader').show();
+            },
+
+            complete: function () {
+                $('.loader').hide();
+                $('#voters-modal').modal('show');
+            },
+        });
+    });
+
+});
+
+var jqAddNewImageOption11 = new jqAddImageOption({
+    wrapperPoll: '.poll-option',
+    parentOption: '.form-group',
+    thumbImageOption: '.render-img',
+    btnChooseImage: '.upload-photo',
+    frImage: "#frame-upload-image-edit",
+    frUploadFile: '.photo-tb-upload-edit',
+    frPreImage: '.img-pre-option-edit',
+    frAddImgLink: '.add-image-by-link-edit',
+    frInputText: '.photo-tb-url-txt-edit',
+    frDelPhoto: '.photo-tb-del-edit',
+    frConfirmYes: '.btn-yes-edit',
+    frInputFileTemp: '.fileImgTempEdit',
+    frContentError : '.error-win-img-edit',
+    messages: 'div[data-option]',
+});
+
+/**
+ * Add New Option
+ */
+var addNewOption = function () {
+    this.init = function() {
+        this.cacheDom();
+        this.bindEvent();
+    }
+
+    this.cacheDom = function () {
+        // DOM to process image of option
+        this.$preview = $('.render-img');
+        this.$btnFileImg = $('.btn-file-img');
+        this.$deleteImg = $('.deleteImg');
+        this.$parentThumb = $('.box-media-image');
+
+        // DOM to process option text
+        this.$newOption = $('.new-option');
+        this.$liParent = $('.parent-vote');
+        this.$inputTextOption = $('.text-new-option');
+        this.$allOption = $('input[id^=horizontal]');
+
+        this.$contentOption = $('.option-name').find('span');
+
+        // DOM button to vote
+        this.$btnVote = $('.btn-vote');
+        this.$boxVote = $('#voting_wizard');
+
+        // DOM warpper vote
+        this.$voteImageWrapper = $('.vote-preview-wrapper');
+
+        // DOM to scrollTop div
+        this.$horizontalWrapper = $('.horizontal-overflow');
+
+        // Check option that choose radio or checkbox
+        this.isRadio = this.$newOption.is(':radio');
+
+        // DOM to show message validation
+        this.$showError = $('#error_option');
+        this.messageValidate = this.$showError.data('message');
+
+        // DOM of datepicker
+        this.$datePicker = $('.date-time-picker');
+        this.$pickDate = $('.pick-date');
+    }
+
+    this.bindEvent = function () {
+        this.$showError.hide();
+        this.$preview.on('load', this.loadPreImage.bind(this));
+        this.$inputTextOption.on('input', this.addText.bind(this));
+        this.$boxVote.on('click', '.new-option', this.chooseOption.bind(this));
+        this.$boxVote.on('click', '.parent-vote' ,this.chooseOptionWithLi.bind(this));
+        this.$pickDate.on('click', this.getTextDatePicker.bind(this));
+        this.$datePicker.on('dp.hide', this.addTextDate.bind(this));
+    }
+
+    this.loadPreImage = function () {
+        this.$deleteImg.show();
+        this.$voteImageWrapper.css('border', '1px solid #ccc');
+        this.$voteImageWrapper.css('border-top', 'none');
+    }
+
+    this.getTextDatePicker = function () {
+        this.$pickDate.data('isHasDate', true);
+        var textInput = typeof this.addText() === 'undefined' ? '' : this.addText().trim();
+        if (this._isValidDate(textInput)) {
+            textInput = '';
+        }
+
+        this.$datePicker.data('preText', textInput);
+        this.$datePicker.datetimepicker({
+            showClose: true,
+            icons: {close: 'glyphicon glyphicon-ok'},
+            format: 'DD-MM-YYYY HH:mm',
+        }).data('DateTimePicker').show();
+    }
+
+    this.addTextDate = function (e) {
+        var dateChoosed = moment(e.date).format('DD-MM-YYYY HH:mm');
+        var preText = this.$datePicker.data('preText');
+        var fullText = (preText + ' ' + dateChoosed).trim();
+
+        this.$inputTextOption.val(fullText);
+
+        // Destroy event datepicker that convert text input
+        this.$datePicker.data('DateTimePicker').hide().destroy();
+        this.$pickDate.data('isHasDate', false);
+    }
+
+    this.readURL = function () {
+        var input = this.$inputFileImg[0];
+        var isImage = this._checkExtensionImage(input);
+        var lengthInput = this.$inputTextOption.val();
+
+        if (!this._validateDuplicate(lengthInput)) {
+            if (isImage) {
+                this.$showError.hide();
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = this._renderImage.bind(this);
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            } else {
+                this.$inputFileImg.val('');
+                this._displayError(this.messageValidate.image);
+            }
+        }
+    }
+
+    this.deletePhoto = function () {
+        this.$preview.attr('src', '').hide();
+        this.$parentThumb.hide();
+        this.$deleteImg.hide();
+        this.$voteImageWrapper.css('border', 'none');
+        if (this.$inputTextOption.val() == '') {
+            this._notViewSubmit();
+        }
+    }
+
+    this.addText = function () {
+        var lengthInput = this.$inputTextOption.val().trim();
+
+        if (!this._validateDuplicate(lengthInput)) {
+            this.$showError.hide();
+            if (this.isRadio) {
+                $('input[id^=horizontal]').prop('checked', false);
+            }
+
+            if (lengthInput == '' && !this.$pickDate.data('isHasDate')) {
+                this._notViewSubmit();
+
+                return;
+            }
+
+            this._viewSubmit();
+
+            return lengthInput;
+        } else {
+            this._notViewSubmit();
+            this._displayError(this.messageValidate.option_duplicate);
+        }
+    }
+
+    this.chooseOption = function (e) {
+        var lengthInput = this.$inputTextOption.val();
+
+        if (lengthInput == '') {
+            if (this.isRadio) {
+                this.$btnVote.prop('disabled', true);
+                this.$newOption.prop('checked', false);
+            }
+
+            this.deletePhoto();
+        }
+
+        if (this.isRadio) {
+            $('input[id^=horizontal]').prop('checked', false);
+        } else {
+            //is checkbox
+            if (!this.$newOption.prop('checked') && !$('input[id^=horizontal]').is(':checked')) {
+                this.$btnVote.prop('disabled', true);
+
+                return;
+            }
+
+            this.$btnVote.prop('disabled', false);
+        }
+    }
+
+    this.chooseOptionWithLi = function () {
+        if (this.isRadio) {
+            this.$newOption.prop('checked', false);
+            this.$inputTextOption.val('')
+            this.deletePhoto();
+        }
+
+        this.$btnVote.prop('disabled', !($('input[id^=horizontal]').is(':checked')));
+        if (this.$newOption.is(':checked')) {
+            this.$btnVote.prop('disabled', false);
+        }
+    }
+
+    this._viewSubmit = function () {
+        this.$newOption.prop('checked', true);
+        this.$btnVote.prop('disabled', false);
+    }
+
+    this._notViewSubmit = function () {
+        if (!$('input[id^=horizontal]').is(':checked')) {
+            this.$btnVote.prop('disabled', true);
+        }
+
+        this.$newOption.prop('checked', false);
+    }
+
+    this._renderImage = function (e) {
+        if (this.isRadio) {
+            $('input[id^=horizontal]').prop('checked', false);
+        }
+
+        this.$preview.attr('src', e.target.result).show();
+        this.$deleteImg.show();
+        this.$voteImageWrapper.css('border', '1px solid #ccc');
+        this.$voteImageWrapper.css('border-top', 'none');
+        this._viewSubmit();
+        this._toScrollLast();
+    }
+
+    this._checkExtensionImage = function (input) {
+        var fileUploadPath = input.value;
+        var extension = fileUploadPath.substring(fileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+        var ruleExtension = ['gif', 'png', 'bmp', 'jpeg', 'jpg'];
+
+        if (ruleExtension.indexOf(extension) > -1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    this._validateDuplicate = function (text) {
+        var isDuplicate = false;
+        this.$contentOption.each(function () {
+            if (text == $(this).text()) {
+                return isDuplicate = true;
+            }
+        });
+
+        return isDuplicate;
+    }
+
+    this._toScrollLast = function () {
+        var scrollHeight = $('.horizontal-overflow').prop("scrollHeight");
+        if (scrollHeight > 400) {
+            this.$horizontalWrapper.animate({
+                    scrollTop: scrollHeight
+            }, 1000);
+        }
+    }
+
+    this._displayError = function (message) {
+        this.$showError.find('.help-block').text(message);
+        this.$showError.show();
+        this._toScrollLast();
+    }
+
+    this._isValidDate = function (dateString) {
+        var regEx = /^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}\s+([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+        return dateString.match(regEx) != null;
+    }
+}
+
+/**
+ * Init plugin add image for option
+ */
+var jqAddNewImageOption = new jqAddImageOption({
+    wrapperPoll: '.horizontal-overflow',
+    btnChooseImage: '.upload-photo',
+    parentOption: '.parent-vote-new-option',
+    messages: 'div[data-message]',
+    frImage: "#frame-upload-image",
+    frUploadFile: '.photo-tb-upload',
+    frPreImage: '.img-pre-option',
+    frAddImgLink: '.add-image-by-link',
+    frInputText: '.photo-tb-url-txt',
+    frDelPhoto: '.photo-tb-del',
+    frConfirmYes: '.btn-yes',
+    frInputFileTemp: '.fileImgTemp',
+    frContentError : '.error-win-img',
+    messages: 'div[data-option]',
+    horizontalWrapper: '.horizontal-overflow',
+});
+
+var addOption = new addNewOption();
+addOption.init();
+
+//# sourceMappingURL=vote.js.map
