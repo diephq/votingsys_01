@@ -285,8 +285,13 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
         if ($arrInputImage) {
             foreach ($arrInputImage as $key => $image) {
-                $extensionImg = is_string($image) ? pathinfo($image, PATHINFO_EXTENSION) : $image->getClientOriginalExtension();
-                $imageNames['optionImage'][$key] = uniqid(time(), true) . '.' . $extensionImg;
+                $img = Image::make($image);
+
+                // Get Extension Image
+                $extensionImg = is_string($image) ? getExtension($img->mime()) : $image->getClientOriginalExtension();
+                $filename = uniqid(time(), true) . '.' . $extensionImg;
+
+                $imageNames['optionImage'][$key] = uniqid(time(), true) . '.' . $filename;
             }
         }
 
@@ -418,7 +423,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                         $dataSettingInserted[] = [
                             'poll_id' => $pollId,
                             'key' => $setting,
-                            'value' => $this->getValueOfSetting($setting, $value),
+                            'value' => $this->getValueOfSetting($setting, $value, $settingChilds),
                             'created_at' => $now,
                         ];
                     }
@@ -444,7 +449,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return null|string
      */
-    public function getValueOfSetting($setting, $values)
+    public function getValueOfSetting($setting, $values, $settingChilds)
     {
         $config = config('settings.setting');
 
@@ -458,6 +463,14 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
         if ($setting == $config['set_password']) {
             return $values['password'];
+        }
+
+        if ($setting == $config['add_type_mail']) {
+            if ($settingChilds['required'] == $config['required_email']) {
+                return $values['listEmail'];
+            }
+
+            return $values['typeEmail'];
         }
 
         return null;
@@ -1254,6 +1267,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'numberOfVote' => $option->countVotes(),
                 'lastVoteDate' => (strcmp($userVoteLast, $participantVoteLast) < 0) ? $participantVoteLast : $userVoteLast,
                 'option_id' => $option->id,
+                'listVoter' => $option->listVoter(),
             ];
         }
 
@@ -1563,5 +1577,120 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         }
 
         return $arrSetting;
+    }
+
+    public function showOptionDate($poll)
+    {
+        if (!$poll || $poll->options->isEmpty()) {
+            return false;
+        }
+
+        $poll->load('options.users', 'options.participants');
+
+        // Init data
+        $data = [
+            'months' => [],
+            'days' => [],
+            'hours' => [],
+            'participants' => collect([]),
+            'notHour' => false,
+            'text' => [],
+        ];
+
+        // Sort By Date For Options
+        $options = $poll->options->sortBy(function ($option) {
+            return strtotime($option->name);
+        });
+
+        $countMonth = $countDay = $indexMonth = $indexDay = $countNotHour = $countText = 0;
+
+        $multipleChoice = $poll->multiple == trans('polls.label.multiple_choice');
+
+        foreach ($options as $option) {
+            if (!$multipleChoice) {
+                //Set Participants
+                if ($voters = $option->listVoter()) {
+                    foreach ($voters as $voter) {
+                        $data['participants']->push($voter);
+                    }
+                }
+            } else {
+                foreach ($option->participants as $participant) {
+                    if (!$data['participants']->contains('id_participant', $participant->id)) {
+                        $data['participants']->push([
+                            'id_participant' => $participant->id,
+                            'name' => $participant->name,
+                            'email' => $participant->email,
+                            'id' => $participant->options->pluck('id'),
+                            'created_at' => $participant->pivot->created_at,
+                        ]);
+                    }
+                }
+            }
+
+            // Check option if is date
+            if ($opt = validateDate($option->name)) {
+                // Get Day Month Year Of Option
+                $monthYear = $opt['monthYear'];
+                $day = $opt['day'];
+                $hour = $opt['hour'];
+
+                // Check option all not hour
+                if ($hour == config('settings.hour_default')) $countNotHour++;
+
+                // Set Month Year
+                if (!isset($data['months'][$indexMonth]['month'])
+                    || $data['months'][$indexMonth]['month'] != $monthYear
+                ) {
+                    $countMonth = 0;
+                    $indexMonth++;
+                    $data['months'][$indexMonth]['month'] = $monthYear;
+                }
+
+                $countMonth++;
+                $data['months'][$indexMonth]['count'] = $countMonth;
+
+                // Set Day Weeks
+                if (!isset($data['days'][$monthYear][$indexDay]['day'])
+                    || $data['days'][$monthYear][$indexDay]['day'] != $day
+                ) {
+                    $countDay = 0;
+                    $indexDay++;
+                    $data['days'][$monthYear][$indexDay]['day'] = $day;
+                }
+
+                $countDay++;
+                $data['days'][$monthYear][$indexDay]['count'] = $countDay;
+
+                // Set Hour
+                $data['hours'][] = [
+                    'hour' => $hour,
+                    'id' => $option->id,
+                ];
+
+                continue;
+            }
+
+            // Check option if is text
+            $data['text'][] = [
+                'text' => $option->name,
+                'id' => $option->id,
+            ];
+            $countText++;
+        }
+
+        // Sort by date of participants that voted if exist
+        if ($participants = $data['participants']) {
+            $data['participants'] = collect($participants)->sortBy(function ($voter) {
+                return $voter['created_at']->timestamp;
+            });
+        }
+
+        // Check all option have hour
+        if ($countNotHour && $countNotHour == $options->count() - $countText) {
+                $data['notHour'] = true;
+        }
+
+        return $data;
     }
 }

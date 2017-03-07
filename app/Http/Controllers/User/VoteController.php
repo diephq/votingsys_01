@@ -253,6 +253,9 @@ class VoteController extends Controller
         $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
         $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
 
+        // Show result options
+        $optionDates = $this->pollRepository->showOptionDate($poll);
+
         if ($mergedParticipantVotes->count()) {
             foreach ($mergedParticipantVotes as $mergedParticipantVote) {
                 $createdAt[] = $mergedParticipantVote->first()->created_at;
@@ -284,12 +287,7 @@ class VoteController extends Controller
         }
 
         $numberOfVote = config('settings.default_value');
-        $html = view('user.poll.vote_details_layouts', [
-            'mergedParticipantVotes' => $mergedParticipantVotes,
-            'numberOfVote' => $numberOfVote,
-            'poll' => $poll,
-            'isHaveImages' => $isHaveImages
-        ])->render();
+        $html = view('user.poll.vote_details_layouts', compact('optionDates'))->render();
 
          //data for draw chart
         $optionRateBarChart = [];
@@ -342,7 +340,7 @@ class VoteController extends Controller
                 compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
             'verticalOption' => view('.user.poll.option_vertical',
                 compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
-            'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
+            'html_result_vote' => view('user.poll.result_vote_layouts', compact('dataTableResult', 'isHaveImages'))->render(),
             'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
             'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
             'htmlPieChart' => view('user.poll.piechart_layouts', [
@@ -403,6 +401,9 @@ class VoteController extends Controller
             $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
             $settingsPoll = $this->pollRepository->getSettingsPoll($id);
 
+            // Show result options
+            $optionDates = $this->pollRepository->showOptionDate($poll);
+
             if ($mergedParticipantVotes->count()) {
                 foreach ($mergedParticipantVotes as $mergedParticipantVote) {
                     $createdAt[] = $mergedParticipantVote->first()->created_at;
@@ -434,12 +435,7 @@ class VoteController extends Controller
             }
 
             $numberOfVote = config('settings.default_value');
-            $html = view('user.poll.vote_details_layouts', [
-                'mergedParticipantVotes' => $mergedParticipantVotes,
-                'numberOfVote' => $numberOfVote,
-                'poll' => $poll,
-                'isHaveImages' => $isHaveImages,
-            ])->render();
+            $html = view('user.poll.vote_details_layouts', compact('optionDates'))->render();
 
              //data for draw chart
             $optionRateBarChart = [];
@@ -509,7 +505,7 @@ class VoteController extends Controller
                 'html' => $html,
                 'horizontalOption' => view('.user.poll.option_horizontal', compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
                 'verticalOption' => view('.user.poll.option_vertical', compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
-                'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
+                'html_result_vote' => view('user.poll.result_vote_layouts', compact('dataTableResult', 'isHaveImages'))->render(),
                 'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
                 'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
                 'htmlPieChart' => view('user.poll.piechart_layouts', [

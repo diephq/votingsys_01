@@ -21,8 +21,8 @@ class SocialAccountsController extends ApiController
 
     public function __construct(
         SocialAccountRepositoryInterface $socialAccountRepository,
-        UserRepositoryInterface $userRepository)
-    {
+        UserRepositoryInterface $userRepository
+    ) {
         $this->socialAccountRepository = $socialAccountRepository;
         $this->userRepository = $userRepository;
     }
@@ -36,13 +36,12 @@ class SocialAccountsController extends ApiController
         }
 
         if ($data['token'] && $data['provider']) {
-            $user = $this->socialAccountRepository->createOrGetUser(
-                Socialite::driver($data['provider']), $data);
+            $user = $this->socialAccountRepository->createOrGetUser(Socialite::driver($data['provider']), $data);
 
             if ($user) {
                 return $this->trueJson([
                     'user' => $user,
-                    'token' => $passportService->getTokenByUser($user)
+                    'token' => $passportService->getTokenByUser($user),
                 ]);
             }
 
